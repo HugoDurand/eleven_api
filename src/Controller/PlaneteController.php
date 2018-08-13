@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use App\Service\PlaneteService;
 
 class PlaneteController extends FOSRestController
 {
@@ -17,16 +18,13 @@ class PlaneteController extends FOSRestController
      * @Rest\View(statusCode=Response::HTTP_OK)
      * @Rest\Get("/planete")
      */
-    public function getPlanetesAction(Request $request){
+    public function getPlanetesAction(PlaneteService $planeteService){
 
-        $planete = $this->getDoctrine()
-            ->getRepository(Planete::class)
-            ->findAll();
+        $planete = $planeteService->getPlanete();
 
         if (empty($planete)) {
             return new JsonResponse(['message' => 'not found'], Response::HTTP_NOT_FOUND);
         }
-
 
         return $planete;
 
@@ -37,11 +35,10 @@ class PlaneteController extends FOSRestController
      * @Rest\View(statusCode=Response::HTTP_OK)
      * @Rest\Get("/planete/{id}")
      */
-    public function getPlaneteActionById(Request $request){
+    public function getPlaneteActionById(Request $request, PlaneteService $planeteService){
 
-        $planete = $this->getDoctrine()
-            ->getRepository(Planete::class)
-            ->find($request->get('id'));
+
+        $planete = $planeteService->getPlaneteById($request->get('id'));
 
         if (empty($planete)) {
             return new JsonResponse(['message' => 'not found'], Response::HTTP_NOT_FOUND);
@@ -56,17 +53,17 @@ class PlaneteController extends FOSRestController
      * @Rest\View(statusCode=Response::HTTP_CREATED)
      * @Rest\Post("/planete")
      */
-    public function postPlaneteAction(Request $request){
+    public function postPlaneteAction(Request $request, PlaneteService $planeteService){
 
         $planete = new Planete();
+
         $form = $this->createForm(PlaneteType::class, $planete);
 
         $form->submit($request->request->all());
 
         if($form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($planete);
-            $em->flush();
+            
+            $planeteService->flushData($planete);
 
             return $planete;
         } else {
@@ -81,13 +78,10 @@ class PlaneteController extends FOSRestController
      * @Rest\View(statusCode=Response::HTTP_OK)
      * @Rest\Put("/planete/{id}")
      */
-    public function putPlaneteAction(Request $request){
+    public function putPlaneteAction(Request $request, PlaneteService $planeteService){
 
-        $planete = $this->getDoctrine()
-            ->getRepository(Planete::class)
-            ->find($request->get('id'));
-
-
+        $planete = $planeteService->getPlaneteById($request->get('id'));
+        
         if (empty($planete)) {
             return new JsonResponse(['message' => 'Annonce not found'], Response::HTTP_NOT_FOUND);
         }
@@ -97,9 +91,8 @@ class PlaneteController extends FOSRestController
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->merge($planete);
-            $em->flush();
+            
+            $planeteService->flushData($planete);
 
             return $planete;
 
@@ -116,11 +109,10 @@ class PlaneteController extends FOSRestController
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      * @Rest\Delete("/planete/{id}")
      */
-    public function deletePlaneteAction(Request $request){
+    public function deletePlaneteAction(Request $request, PlaneteService $planeteService){
 
-        $planete = $this->getDoctrine()
-            ->getRepository(Planete::class)
-            ->find($request->get('id'));
+
+        $planete = $planeteService->getPlaneteById($request->get('id'));
 
 
         if ($planete) {

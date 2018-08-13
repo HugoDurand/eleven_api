@@ -3,28 +3,51 @@
 namespace App\Service;
 
 use App\Entity\Planete;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PlaneteService{
 
-    private $em;
+    private $entityManager;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
+    public function getPlanete()
+    {
+        $planete = $this
+            ->entityManager
+            ->getRepository(Planete::class)
+            ->findAll();
 
-    public function getPlaneteById($id){
+        return $planete;
 
-
-        //$planete = $em->getRepository
-
-       // return $planete;
     }
-/*
-$planete = $this->getDoctrine()
-->getRepository(Planete::class)
-->find($request->get('id'));*/
+    
+    public function getPlaneteById($id)
+    {
+        $planete = $this
+            ->entityManager
+            ->getRepository(Planete::class)
+            ->find($id);
+        
+        return $planete;
+        
+    }
+    
+    public function flushData($planete){
+        
+        $this->entityManager->persist($planete);
+        $this->entityManager->flush();
+        
+    }
+
+    public function removeData($planete){
+
+        $this->entityManager->remove($planete);
+        $this->entityManager->flush();
+
+    }
 
 }
