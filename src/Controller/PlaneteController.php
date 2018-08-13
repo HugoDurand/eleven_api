@@ -41,7 +41,7 @@ class PlaneteController extends FOSRestController
 
         $planete = $this->getDoctrine()
             ->getRepository(Planete::class)
-            ->find($request->get('id'));;
+            ->find($request->get('id'));
 
         if (empty($planete)) {
             return new JsonResponse(['message' => 'not found'], Response::HTTP_NOT_FOUND);
@@ -85,7 +85,7 @@ class PlaneteController extends FOSRestController
 
         $planete = $this->getDoctrine()
             ->getRepository(Planete::class)
-            ->find($request->get('id'));;
+            ->find($request->get('id'));
 
 
         if (empty($planete)) {
@@ -109,40 +109,7 @@ class PlaneteController extends FOSRestController
 
 
     }
-
-
-    /**
-     * @Rest\View(statusCode=Response::HTTP_OK)
-     * @Rest\Patch("/planete/{id}")
-     */
-    public function patchPlaneteAction(Request $request){
-
-        $planete = $this->getDoctrine()
-            ->getRepository(Planete::class)
-            ->find($request->get('id'));;
-
-
-        if (empty($planete)) {
-            return new JsonResponse(['message' => 'Annonce not found'], Response::HTTP_NOT_FOUND);
-        }
-
-        $form = $this->createForm(PlaneteType::class, $planete);
-
-        $form->submit($request->request->all());
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->merge($planete);
-            $em->flush();
-
-            return $planete;
-
-        } else {
-            return $form;
-        }
-
-
-    }
+    
 
 
     /**
@@ -153,7 +120,7 @@ class PlaneteController extends FOSRestController
 
         $planete = $this->getDoctrine()
             ->getRepository(Planete::class)
-            ->find($request->get('id'));;
+            ->find($request->get('id'));
 
 
         if ($planete) {

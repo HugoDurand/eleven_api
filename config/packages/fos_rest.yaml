@@ -9,7 +9,7 @@ fos_rest:
     format_listener:
         enabled: true
         rules:
-            - { path: '/api',  methods: ['GET', 'POST', 'DELETE', 'PUT'], priorities: ['json'], fallback_format: 'json' }
+            - { path: '/api',  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'], priorities: ['json'], fallback_format: 'json' }
     body_listener:
         enabled: true
     allowed_methods_listener: true
