@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Planete;
 use App\Form\PlaneteType;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
