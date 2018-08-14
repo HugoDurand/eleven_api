@@ -8,6 +8,10 @@ class TestPlanete extends WebTestCase{
 
 
 
+    /**
+     * Testing api get data
+     */
+
     public function testgetPlanete()
     {
         $client = static::createClient();
@@ -22,7 +26,9 @@ class TestPlanete extends WebTestCase{
     }
 
 
-
+    /**
+     * Testing api get data by id (don't forget to use an harcoded id who match with an existing id in the database )
+     */
     public function testgetPlaneteById()
     {
         $client = static::createClient();
@@ -36,6 +42,9 @@ class TestPlanete extends WebTestCase{
 
 
 
+    /**
+     * Testing api create data
+     */
     public function testcreatePlanete()
     {
         $client = static::createClient();
@@ -50,8 +59,11 @@ class TestPlanete extends WebTestCase{
         
         
     }
-    
 
+
+    /**
+     * Testing api update data (don't forget to use an harcoded id who match with an existing id in the database )
+     */
     public function testputPlanete()
     {
         $client = static::createClient();
@@ -64,6 +76,10 @@ class TestPlanete extends WebTestCase{
     }
 
 
+
+    /**
+     * Testing api delete data (don't forget to use an harcoded id who match with an existing id in the database )
+     */
     public function testdeletePlanete()
     {
         $client = static::createClient();
